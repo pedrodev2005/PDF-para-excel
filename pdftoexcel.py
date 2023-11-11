@@ -91,8 +91,10 @@ for row_data in data_to_append:
         # Adicionar o código ao conjunto de códigos existentes
         existing_codes.add(codigo_boleto)
 
+# Salvar o arquivo Excel atualizado (.xlsm)
 wb.save(excel_file)
 
+# Fechar o arquivo Excel
 wb.close()
 
 
@@ -109,18 +111,23 @@ with open('C:\oletos\este2.pdf', 'rb') as pdf_file:
     for page_num, page in enumerate(pdf_reader_bb_correios.pages):
         page_text = page.extract_text()
 
+        # Padrão para data (DD/MM/AAAA)
         date_pattern = r'\d{2}/\d{2}/\d{4}'
         dates = re.findall(date_pattern, page_text)
 
+        # Padrão para valores monetários (R$ X.XXX,XX)
         value_pattern = r'R\$\s*([\d.,]+)'
         values = re.findall(value_pattern, page_text)
 
+        # Padrão para beneficiário
         beneficiario_pattern = r'Beneficiário\s*([^\n]+)'
         beneficiario = re.findall(beneficiario_pattern, page_text)
 
+        # Padrão para o código de barras (na estrutura "00190.00009 03164.048005 00015.619174 1 96670000260316")
         codigo_de_barras_pattern = r'(\d{5}\.\d{5} \d{5}\.\d{6} \d{5}\.\d{6} \d{1} \d{14})'
         codigo_de_barras = re.findall(codigo_de_barras_pattern, page_text)
 
+        # Padrão para o número do documento (estrutura "682914")
         numero_documento_pattern = r'(\d{6})'
         numero_documento = re.findall(numero_documento_pattern, page_text)
 
@@ -156,7 +163,7 @@ df = pd.DataFrame(data)
 # Carregar o arquivo Excel existente
 excel_file = 'pedro.xlsm'
 wb = openpyxl.load_workbook(excel_file, read_only=False, keep_vba=True)
-ws = wb.active  
+ws = wb.active  # Ou selecione uma planilha específica, se necessário
 
 # Criar um conjunto (set) para armazenar os códigos de boleto existentes no Excel
 existing_codes = set()
@@ -166,17 +173,17 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=3, max_col=3):
     for cell in row:
         existing_codes.add(cell.value)
 
-
+# Iterar sobre os dados do DataFrame e adicionar apenas os que não estão no Excel
 for index, row in df.iterrows():
     codigo_boleto = row['Código de Barras']
     if codigo_boleto not in existing_codes:
         ws.append(list(row))
         existing_codes.add(codigo_boleto)
 
-
+# Salvar o arquivo Excel atualizado (.xlsm)
 wb.save(excel_file)
 
-
+# Fechar o arquivo Excel
 wb.close()
 
 
@@ -194,20 +201,23 @@ with open('C:\oletos\este3.pdf', 'rb') as pdf_file:
     for page_num, page in enumerate(pdf_reader_san.pages):
         page_text = page.extract_text()
 
-
+        # Padrão para data
         date_pattern = r'\d{2}/\d{2}/\d{4}'
         dates = re.findall(date_pattern, page_text)
 
- 
+        # Padrão para valores monetários
         value_pattern = r'Valor da fatura\s*R\$\s*([\d.,]+)'
         values = re.findall(value_pattern, page_text)
 
+        # Padrão para beneficiário
         beneficiario_pattern = r'Beneficiário\s*([^\n]+)'
         beneficiario = re.findall(beneficiario_pattern, page_text)
 
+        # Padrão para o código de barras
         codigo_de_barras_pattern = r'(\d{5}\.\d{5} \d{5}\.\d{6} \d{5}\.\d{6} \d{1} \d{14})'
         codigo_de_barras = re.findall(codigo_de_barras_pattern, page_text)
 
+        # Padrão para o número do documento
         numero_documento_pattern = r'\d{7}-\d{2}'
         numero_documento = re.findall(numero_documento_pattern, page_text)
 
@@ -246,7 +256,9 @@ df = pd.DataFrame(data)
 # Carregar o arquivo Excel existente
 excel_file = 'pedro.xlsm'
 wb = openpyxl.load_workbook(excel_file, read_only=False, keep_vba=True)
-ws = wb.active  
+ws = wb.active  # Ou selecione uma planilha específica, se necessário
+
+# Criar um conjunto (set) para armazenar os códigos de boleto existentes no Excel
 existing_codes = set()
 
 # Preencher o conjunto com os códigos de boleto existentes no Excel
@@ -261,8 +273,8 @@ for index, row in df.iterrows():
         ws.append(list(row))
         existing_codes.add(codigo_boleto)
 
-
+# Salvar o arquivo Excel atualizado (.xlsm)
 wb.save(excel_file)
 
-
+# Fechar o arquivo Excel
 wb.close()
