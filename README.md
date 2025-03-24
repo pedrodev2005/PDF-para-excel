@@ -1,4 +1,5 @@
 # pdf_to_excel
 Leitor de boletos em pdf para planilhas excel.
 
-Este código foi feito para leitura de boletos em pdf de acordo com a sua estrutura.
+Script em Pythoncom Selenium e Pandas para automatizar o envio de mensagens e arquivos via WhatsApp. O sistema lê uma planilha com contatos e mensagens, acessa o WhatsApp Web e envia os conteúdos automaticamente, agilizando a comunicação com clientes e parceiros.
+
